@@ -28,9 +28,9 @@ END
 GO
 
 --Como se usa
-DECLARE @id INT
-SELECT @id = 7
-EXEC Sp_MantCli @id OUTPUT, 'ANA', 'GONZALEZ', 'F', 5000.00, 1
-SELECT ClaveGenerada = @id
-GO
+--DECLARE @id INT
+--SELECT @id = 7
+--EXEC Sp_MantCli @id OUTPUT, 'ANA', 'GONZALEZ', 'F', 5000.00, 1
+--SELECT ClaveGenerada = @id
+--GO
 
