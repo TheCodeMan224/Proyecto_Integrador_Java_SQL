@@ -10,7 +10,6 @@ import javax.swing.UIManager;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
-import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 
 public class JTextFieldValidado extends JTextField{
@@ -36,9 +35,9 @@ public class JTextFieldValidado extends JTextField{
 		this.tamanio=columns;
 		//revisamos si el tema trae color de borde, si no tiene le ponemos gris
 		this.defaultBorderColor =UIManager.getColor("TextField.borderColor")!=null
-				? UIManager.getColor("TextFied.borderColor")
+				? UIManager.getColor("TextField.borderColor")
 						:Color.GRAY;
-		//le ponemos filtro al di¿ocumento del campo para controlar mayusculas y limite de letras
+		//le ponemos filtro al documento del campo para controlar mayusculas y limite de letras
 		((AbstractDocument) getDocument()).setDocumentFilter(new TextoValidadoFilter());
 		initCustomBehavior();
 	}
@@ -77,7 +76,10 @@ public class JTextFieldValidado extends JTextField{
 	}
  
 	public void initCustomBehavior() {
-		this.setColumns(10);//cuantas columnas de ancho debe mostrar
+		//si no tiene definido un ancho de columnas, se le asigna 10 por defecto
+		if (this.getColumns() == 0) {
+			this.setColumns(10);
+		}
 		
 		//detecta el focus dentro del cuadro de texto
 		this.addFocusListener(new FocusAdapter(){
