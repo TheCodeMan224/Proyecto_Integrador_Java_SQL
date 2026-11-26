@@ -8,6 +8,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 
@@ -127,8 +129,67 @@ public class JTextFieldValidado extends JTextField{
 		this.setBorder(BorderFactory.createLineBorder(defaultBorderColor, 1));
 	}
 
+	//clase que extiende de DocumentFilter que revisa y filtra el texto que se escribe, borra o pega
 	private class TextoValidadoFilter extends DocumentFilter{
+		//se ejecuta cuando se intenta insertar texto nuevo
+		@Override
+		public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+				throws BadLocationException {
+			//si no hay texto no hace nada y sale
+			if(string==null) {
+				return;
+			}
+			//obtiene el texto actual que hay en el documento
+			String textoActual = fb.getDocument().getText(0, fb.getDocument().getLength());
+			//arma como quedaria el texto metiendo string en la posiscion offset
+			String nuevoTexto = textoActual.substring(0, offset)+ string + textoActual.substring(offset);
+			//usa el metodo limpiarTexto al nuevoTexto
+			String limpio =limpiarTexto(nuevoTexto);
+			//escribe el texto limpio en el documento
+			fb.replace(0, fb.getDocument().getLength(), limpio, attr);
+		}
 		
+		//se ejecuta cuando se reeemplaza texto
+		@Override
+		public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+				throws BadLocationException {
+			//lee el texto actual que hay en el documento
+			String textoActual = fb.getDocument().getText(0, fb.getDocument().getLength());
+			//con esto se arma el nuevo texto, antes del offset + el texto nuevo + despues de offset + length
+			String nuevoTexto = textoActual.substring(0, offset)
+					+ (text == null? "" : text)
+					+ textoActual.substring(offset + length);
+			//usa el metodo limpiarTexto al nuevoTexto
+			String limpio = limpiarTexto(nuevoTexto);
+			//escribe el texto limpio en el documento
+			fb.replace(0, fb.getDocument().getLength(), limpio, attrs);
+		}
+		
+		//se ejecuta cuando se borra texto
+		@Override
+		public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
+			//lee el texto actual que hay en el documento antes de borrar
+			String textoActual = fb.getDocument().getText(0, fb.getDocument().getLength());
+			//quita el pedazo que va desde offset hasta offset + length y junta lo demas 
+			String nuevoTexto = textoActual.substring(0, offset)
+					+ textoActual.substring(offset + length);
+			//usa el metodo limpiarTexto al nuevoTexto despues de borrar
+			String limpio = limpiarTexto(nuevoTexto);
+			//escribe el texto limpio en el documento
+			fb.replace(0, fb.getDocument().getLength(), limpio, null);
+		}
+		//ajusta el texto segun el formato de mayusculas y el tamaño maximo permitido
+		private String limpiarTexto(String texto) {
+			//si mayisculas esta activo, pasa el texto a mayusculas, si no lo deja igual
+			String resultado = mayusculas? texto.toUpperCase() : texto;
+			//revisar que la longitud del texto no supere el limite permitido
+			if(resultado.length() > tamanio) {
+				//si el texto se llega a pasar lo corta para dejarlo hasta el máximo permitido
+				resultado = resultado.substring(0, tamanio);
+			}
+			//devuelve el resultado ya listo para mostrarse en el campo
+			return resultado;
+		}		
 	}
 	
 	
