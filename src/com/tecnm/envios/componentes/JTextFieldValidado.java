@@ -75,6 +75,7 @@ public class JTextFieldValidado extends JTextField{
 		return isValidCampo;
 	}
  
+	
 	public void initCustomBehavior() {
 		//si no tiene definido un ancho de columnas, se le asigna 10 por defecto
 		if (this.getColumns() == 0) {
