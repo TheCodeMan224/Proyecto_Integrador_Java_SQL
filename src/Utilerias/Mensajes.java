@@ -9,7 +9,7 @@ public class Mensajes {
 	// ---------------------------------------------------------------------------------------
 	// Forma de usarlos: Llamar a la ventana según el caso y usar el "this"
 	// Mensajes.mostrarInfo(this, " x texto que se vaya a mostrar");
-
+	
 	public static void mostrarInfo(Component padre, String mensaje) {
 		JOptionPane.showMessageDialog(padre, mensaje, "Información", JOptionPane.INFORMATION_MESSAGE);
 	}

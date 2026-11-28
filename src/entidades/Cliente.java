@@ -10,8 +10,8 @@ public class Cliente {
 		this(0, "", "", 'M', 0.0, 0, "");
 	}
 
-	public Cliente(int cliid, String clinombre, String cliApellidos, char cliSexo,
-			double cliLimiteCredito, int tipid, String tipnombre) {
+	public Cliente(int cliid, String clinombre, String cliApellidos, char cliSexo, double cliLimiteCredito, int tipid,
+			String tipnombre) {
 		super();
 		this.cliid = cliid;
 		this.clinombre = clinombre;
@@ -24,8 +24,8 @@ public class Cliente {
 
 	@Override
 	public String toString() {
-		return cliid + ", " + clinombre + ", " + cliApellidos + ", " + cliSexo + ", "
-				+ cliLimiteCredito + ", " + tipnombre;
+		return cliid + ", " + clinombre + ", " + cliApellidos + ", " + cliSexo + ", " + cliLimiteCredito + ", "
+				+ tipnombre;
 	}
 
 	public int getCliid() {
